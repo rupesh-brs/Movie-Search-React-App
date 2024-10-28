@@ -1,23 +1,32 @@
-import logo from './logo.svg';
+import React, { useState } from 'react';
+import MovieSearch from './components/MovieSearch';
+import MovieList from './components/MovieList';
+import MovieModal from './components/MovieModal';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 
 function App() {
+  const [movies, setMovies] = useState([]);
+  const [selectedMovie, setSelectedMovie] = useState(null);
+
+  const searchMovies = (movies) => {
+    setMovies(movies);
+  };
+
+  const handleMovieClick = (movie) => {
+    setSelectedMovie(movie);
+  };
+
+  const closeModal = () => {
+    setSelectedMovie(null);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="container d-flex flex-column align-items-center justify-content-center text-center min-vh-100">
+      <h2>Movie Search App</h2>
+      <MovieSearch onSearch={searchMovies} />
+      <MovieList movies={movies} onMovieClick={handleMovieClick} />
+      {selectedMovie && <MovieModal movie={selectedMovie} onClose={closeModal} />}
     </div>
   );
 }
